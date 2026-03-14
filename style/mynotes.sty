@@ -1,0 +1,40 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mynotes}[2026/03/13 Personal ML notes style]
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{microtype}
+\RequirePackage{geometry}
+\geometry{margin=1in}
+
+\RequirePackage{amsmath}
+\RequirePackage{mathtools}
+\RequirePackage{bm}
+\RequirePackage{amsthm}
+
+\RequirePackage{newtxtext}
+\RequirePackage{newtxmath}
+
+\RequirePackage{parskip}
+\RequirePackage{titlesec}
+\RequirePackage{hyperref}
+\RequirePackage{xcolor}
+\RequirePackage{marginnote}
+
+\RequirePackage{caption}
+\captionsetup{font=small, labelfont=bf}
+
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+
+
+\titleformat{\chapter}[display]
+{\huge\bfseries}
+{\chaptername\ \thechapter}
+{20pt}
+{\Huge}
+
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
