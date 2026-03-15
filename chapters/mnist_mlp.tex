@@ -1,4 +1,4 @@
-\chapter{MNIST Multi-Layer Perceptron}
+\chapter{Empirical Study of MLP Training Dynamics on MNIST}
 
 In this chapter we study the behavior of a simple multilayer perceptron (MLP) trained on the MNIST dataset. The objective is to understand how different hyperparameters affect training dynamics and model accuracy.
 
@@ -46,21 +46,24 @@ Several patterns can be observed:
 
 \section{Experiments}
 
-Once a baseline is established, we can not study the effects of parameters such as the batch size and the learning rate on the MLP metrics. These experiments performed on the MLP with the values used for parameters are summarized in \cref{tab:mnist-mlp-exps}. The first row in this table shows the baseline experiment Exp~1.
+Once a baseline is established, we can not study the effects of parameters such as the batch size and the learning rate on the MLP metrics. These experiments performed on the MLP with the values used for parameters are summarized in \cref{tab:mnist-mlp-exps}. The first row in this table shows the baseline experiment \mlpexp{1}.
 
 \begin{table}[tbp]
     \centering
 
     \rowcolors{2}{tablegray}{white}
 
-    \begin{eleganttable}{cccccc}
+    \begin{eleganttable}{lcccccc}
         \rowcolor{tableheader}
-        \thead{Experiment} & \thead{Batch Size} & \thead{Learning Rate} & \thead{Epochs} & \thead{Accuracy (\%)} & \thead{Execution Time (s)} \\
+        \textbf{Experiment} & \textbf{Layer Sizes} & \textbf{Batch Size} & \makecell{\textbf{Learning} \\ \textbf{Rate}} & \textbf{Epochs} & \textbf{Accuracy (\%)} & \makecell{\textbf{Execution} \\ \textbf{Time (s)}} \\
         \midrule
-        Exp 1  &  64   &  $10^{-3}$  &  1  &  94.13  &  10.469 \\
-        Exp 2  &  128  &  $10^{-3}$  &  1  &  93.56  &  10.285 \\
-        Exp 3  &  64   &  $10^{-4}$  &  1  &  89.69  &  10.294 \\
-        Exp 4  &  64   &  $10^{-2}$  &  1  &  70.08  &  10.338 \\
+        Exp 1  &  784--128--10       &  64   &  $10^{-3}$  &  1  &  94.13  &  10.469 \\
+        Exp 2  &  784--128--10       &  128  &  $10^{-3}$  &  1  &  93.56  &  10.285 \\
+        Exp 3  &  784--128--10       &  64   &  $10^{-4}$  &  1  &  89.69  &  10.294 \\
+        Exp 4  &  784--128--10       &  64   &  $10^{-2}$  &  1  &  70.08  &  10.338 \\
+        Exp 5  &  784--128--10       &  64   &  $10^{-3}$  &  3  &  96.95  &  31.099 \\
+        Exp 6  &  784--512--10       &  64   &  $10^{-3}$  &  1  &  95.8   &  12.286 \\
+        Exp 7  &  784--512--256--10  &  64   &  $10^{-3}$  &  1  &  96.42  &  13.661 \\
     \end{eleganttable}
 
     \caption{Values used for MLP parameters in experiments to observe the metrics.}
@@ -68,7 +71,7 @@ Once a baseline is established, we can not study the effects of parameters such 
 \end{table}
 
 
-\subsection{Exp 2: Increasing the Batch Size}
+\subsection{\mlpexp{2}: Increasing the Batch Size}
 
 Increasing the batch size reduces the variance of the gradient estimates, resulting in smoother gradient trajectories. However, the overall magnitude of the gradients and the evolution of parameter norms remain largely unchanged. This indicates that the batch size primarily influences stochastic noise rather than the expected optimization trajectory. When the noise is decreased as a result of the batch size, weights could land in a minima shaped like a sharp basin. Such minima are associated with poor generalization. That is why the accuracy slightly reduces. The computational efficiency is improved as we increase the batch size. This explains the reduction in the execution time. \cref{fig:mnist-mlp-exp02} shows the graphs of observed metrics.
 
@@ -80,9 +83,9 @@ Increasing the batch size reduces the variance of the gradient estimates, result
 \end{figure}
 
 
-\subsection{Exp 3: Decreasing the Learning Rate}
+\subsection{\mlpexp{3}: Decreasing the Learning Rate}
 
-Decreasing the learning rate reduces the step size taken during gradient descent. As a result, parameter updates become smaller and the parameters evolve more slowly during training. Consequently, the norms of the parameters increase at a slower rate compared to Exp~1, as shown in \cref{fig:mnist-mlp-exp03}.
+Decreasing the learning rate reduces the step size taken during gradient descent. As a result, parameter updates become smaller and the parameters evolve more slowly during training. Consequently, the norms of the parameters increase at a slower rate compared to \mlpexp{1}, as shown in \cref{fig:mnist-mlp-exp03}.
 
 Although the gradients themselves remain of comparable magnitude, the smaller learning rate reduces the effective update applied to the parameters at each step. This leads to slower progress toward a minimum of the loss function, which results in lower training effectiveness within a single epoch and therefore slightly reduced accuracy. The learning rate does not significantly affect the overall execution time since the same number of forward and backward passes are performed.
 
@@ -94,7 +97,7 @@ Although the gradients themselves remain of comparable magnitude, the smaller le
 \end{figure}
 
 
-\subsection{Exp 4: Increasing the Learning Rate}
+\subsection{\mlpexp{4}: Increasing the Learning Rate}
 
 Increasing the learning rate further to $10^{-1}$ causes the optimizer to take very large steps during gradient descent. As a result, the parameters evolve too aggressively during training. This behavior is clearly visible in \cref{fig:mnist-mlp-exp04}, where the norms of the parameters grow extremely rapidly compared to previous experiments.
 
@@ -105,4 +108,59 @@ Although the gradient norms remain of comparable magnitude, the large learning r
     \includegraphics[width=\textwidth]{figures/mlp/exp04}
     \caption{Effects of increasing the learning rate during training.}
     \label{fig:mnist-mlp-exp04}
+\end{figure}
+
+
+\subsection{\mlpexp{5}: Increasing the Number of Epochs}
+
+Increasing the number of epochs allows the model to perform additional passes over the training data, resulting in further refinement of the parameters. In \mlpexp{5}, the accuracy improves to 96.95\%, compared to 94.13\% in \mlpexp{1}. This indicates that although the model already reaches a reasonably good solution after a single epoch, additional training allows the optimizer to continue refining the parameters and reduce the loss further.
+
+The primary trade-off of increasing the number of epochs is the increase in execution time. Since the model processes the entire training dataset multiple times, the runtime increases approximately linearly with the number of epochs. In this experiment the execution time is roughly tripled compared to \mlpexp{1}. However, this scaling may vary depending on the utilized hardware and data loading efficiency.
+
+As shown in \cref{fig:mnist-mlp-exp05}, the gradient norms stabilize relatively early during training. This suggests that the optimization process quickly reaches a region of the loss landscape where gradients become more consistent. Meanwhile, the parameter norms continue to increase steadily as the model accumulates updates over successive epochs, although the rate of growth gradually slows. It is common to observe monotonic growth in weight norms during training, even after gradient magnitudes stabilize.
+
+The plot of the gradient-to-parameter norm ratio further illustrates this behavior. The decreasing ratio indicates that the relative update magnitude becomes smaller as training progresses, suggesting that the optimizer is approaching a stable region of the loss surface.
+
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/mlp/exp05}
+    \caption{Effects of increasing the number of epochs during training.}
+    \label{fig:mnist-mlp-exp05}
+\end{figure}
+
+
+\subsection{\mlpexp{6}: Increasing the Size of the Hidden Layer}
+
+Increasing the size of the hidden layer introduces a larger number of trainable parameters in the network. Consequently, the magnitude of the parameter norms becomes larger compared to those in \mlpexp{1}, as shown in the middle plot of \cref{fig:mnist-mlp-exp06}. This behavior is expected because the $\ell_2$ norm of the parameters grows with the number of weights in the model.
+
+The larger hidden layer also increases the representational capacity of the network, enabling the MLP to learn more complex patterns in the training data. As a result, the classification accuracy improves compared to the baseline configuration.
+
+Interestingly, the magnitude of the gradient norms remains comparable to those observed in \mlpexp{1}. However, since the parameter norms grow faster in the larger model, the ratio of the gradient norm to the parameter norm decreases more rapidly. This indicates that the relative size of parameter updates becomes smaller as the network capacity increases.
+
+The primary trade-off of increasing the hidden layer size is the higher computational cost, which results in longer execution time during training.
+
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/mlp/exp06}
+    \caption{Effects of increasing the size of the hidden layer during training.}
+    \label{fig:mnist-mlp-exp06}
+\end{figure}
+
+
+\subsection{\mlpexp{7}: Adding Hidden Layers}
+
+Adding additional hidden layers reveals several interesting aspects of training dynamics in MLPs, as shown in \cref{fig:mnist-mlp-exp07}. One important observation is that the gradient norms decrease as gradients backpropagate through the network toward the input layers. This behavior reflects attenuation of gradient magnitudes across layers during backpropagation.
+
+Another observation is that the magnitude of parameter norms increases toward the earlier layers of the network. This is primarily due to the number of parameters in each layer. The first, second, and third weight layers contain $784 \times 512 = 401{,}408$, $512 \times 256 = 131{,}072$, and $256 \times 10 = 2{,}560$ parameters, respectively. Layers with more parameters tend to exhibit larger $\ell_2$ norms.
+
+Consequently, the ratio of gradient norm to parameter norm decreases more rapidly in the earlier layers. This indicates that the relative magnitude of parameter updates becomes smaller toward the input side of the network.
+
+Adding hidden layers also increases the representational capacity of the model, which explains the improvement in the classification accuracy. However, the trade-off is increased execution time due to the larger number of parameters and the additional computations required during forward and backward passes.
+
+
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/mlp/exp07}
+    \caption{Effects of adding hidden layers during training.}
+    \label{fig:mnist-mlp-exp07}
 \end{figure}
