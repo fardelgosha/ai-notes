@@ -1,0 +1,36 @@
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{siunitx}
+
+\definecolor{tableheader}{RGB}{210,225,245}
+\definecolor{tablegray}{RGB}{245,245,245}
+
+\renewcommand{\arraystretch}{1.2}
+
+\newcommand{\thead}[1]{\textbf{\textsc{#1}}}
+
+\newenvironment{eleganttable}[1]
+{%
+    \rowcolors{2}{tablegray}{white}%
+    \setlength{\aboverulesep}{0pt}%
+    \setlength{\belowrulesep}{0pt}%
+    \begin{tabular}{#1}%
+        \toprule
+        }
+        {%
+        \bottomrule
+    \end{tabular}
+}
+
+\newenvironment{styledtablex}[1]
+{%
+    \rowcolors{2}{tablegray}{white}%
+    \setlength{\aboverulesep}{0pt}%
+    \setlength{\belowrulesep}{0pt}%
+    \begin{tabularx}{\textwidth}{#1}%
+        \toprule
+        }
+        {%
+        \bottomrule
+    \end{tabularx}
+}

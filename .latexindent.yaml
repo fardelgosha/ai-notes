@@ -1,0 +1,4 @@
+logFilePreferences:
+  showEveryYamlRead: 0
+  showAmalgamatedSettings: 0
+  logFileName: build/indent.log

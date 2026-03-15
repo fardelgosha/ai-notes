@@ -1,0 +1,36 @@
+\begin{tikzpicture}[node distance=12mm and 18mm, font=\small]
+
+% Inputs
+\node (x1) {$x_1$};
+\node (x2) [below=of x1] {$x_2$};
+\node (vdots) [below=of x2] {$\vdots$};
+\node (xn) [below=of vdots] {$x_n$};
+
+% Summing junction
+\node (sum) [sum, right=35mm of x2] {$+$};
+
+% Bias input
+\node (b) [above=18mm of sum] {$b$};
+
+% Activation block
+\node (act) [block, right=20mm of sum] {$\sigma(\cdot)$};
+
+% Output
+\node (y) [right=18mm of act] {$y$};
+
+% Input arrows
+\draw[arrow] (x1) -- node[above, sloped] {$w_1$} (sum);
+\draw[arrow] (x2) -- node[above, sloped] {$w_2$} (sum);
+\draw[arrow] (vdots) -- (sum);
+\draw[arrow] (xn) -- node[below, sloped] {$w_n$} (sum);
+
+% Bias arrow
+\draw[arrow] (b) -- (sum);
+
+% Sum to activation
+\draw[arrow] (sum) -- node[above] {$\vect{w}^\top\vect{x} + b$} (act);
+
+% Activation to output
+\draw[arrow] (act) -- (y);
+
+\end{tikzpicture}

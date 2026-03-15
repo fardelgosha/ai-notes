@@ -1,0 +1,32 @@
+\chapter{Introduction}
+
+A \emph{perceptron}\keyword{Perceptron} is a fundamental computational unit of neural networks, inspired by the behavior of biological neurons. It receives multiple inputs, computes a weighted combination of those inputs, and produces an output after applying a nonlinear activation function.
+
+Formally, let $\vect{x} \in \R^n$ denote an input vector. A perceptron computes
+\[
+    y = \sigma\left(\vect{w}^\top \vect{x} + b\right),
+\]
+where $\vect{w} \in \R^n$ is a vector of \emph{weights}, $b \in \R$ is a \emph{bias term}, and $\sigma(\cdot)$ is an \emph{activation function}.
+
+\begin{figure}[tb]
+    \centering
+    \input{../figures/perceptron_geometry.tikz}
+    \caption{A perceptron receives input features, computes a weighted sum with bias, and applies an activation function.}
+\end{figure}
+
+The quantity $\vect{w}^\top \vect{x} + b$ defines a linear function of the input. The set of points satisfying
+\[
+    \vect{w}^\top \vect{x} + b = 0
+\]
+forms a hyperplane in $\R^n$. This hyperplane divides the input space into two half-spaces, corresponding to the two possible outputs of the perceptron.
+
+In a binary classification setting, the perceptron assigns a label according to the sign of this linear function:
+\[
+    y =
+    \begin{cases}
+        1, & \text{if } \vect{w}^\top \vect{x} + b > 0, \\
+        0, & \text{otherwise.}
+    \end{cases}
+\]
+
+Although a single perceptron can represent only linearly separable decision boundaries, networks composed of multiple perceptrons can approximate highly complex nonlinear functions.

@@ -12,77 +12,7 @@
 \maketitle
 \tableofcontents
 
-\chapter{Introduction}
-
-A \emph{perceptron}\keyword{Perceptron} is a fundamental computational unit of neural networks, inspired by the behavior of biological neurons. It receives multiple inputs, computes a weighted combination of those inputs, and produces an output after applying a nonlinear activation function.
-
-Formally, let $\vect{x} \in \R^n$ denote an input vector. A perceptron computes
-\[
-    y = \sigma\left(\vect{w}^\top \vect{x} + b\right),
-\]
-where $\vect{w} \in \R^n$ is a vector of \emph{weights}, $b \in \R$ is a \emph{bias term}, and $\sigma(\cdot)$ is an \emph{activation function}.
-
-\begin{figure}[tb]
-    \centering
-    \begin{tikzpicture}[
-            >=Latex,
-            node distance=1.4cm,
-            input/.style={},
-            neuron/.style={draw, circle, minimum size=1.2cm},
-            output/.style={},
-            labelbox/.style={align=center}
-        ]
-
-        % Inputs
-        \node[input] (x1) {$x_1$};
-        \node[input, below=of x1] (x2) {$x_2$};
-        \node[input, below=of x2] (x3) {$x_3$};
-
-        % Dots
-        \node[below=0.6cm of x3] (dots) {$\vdots$};
-
-        % Last input
-        \node[input, below=0.6cm of dots] (xn) {$x_n$};
-
-        % Neuron
-        \node[neuron, right=3cm of x2] (perc) {$\sum$};
-
-        % Output
-        \node[output, right=2.5cm of perc] (y) {$y=\sigma(\vect{w}^\top\vect{x} + b)$};
-
-        % Arrows from inputs
-        \draw[->] (x1) -- node[above, sloped] {$w_1$} (perc);
-        \draw[->] (x2) -- node[above, sloped] {$w_2$} (perc);
-        \draw[->] (x3) -- node[above, sloped] {$w_3$} (perc);
-        \draw[->] (xn) -- node[above, sloped] {$w_n$} (perc);
-
-        % Bias input
-        \node[input, above=1.2cm of perc] (b) {$b$};
-        \draw[->] (b) -- (perc);
-
-        % Output arrow
-        \draw[->] (perc) -- (y);
-
-    \end{tikzpicture}
-    \caption{A perceptron receives input features, computes a weighted sum with bias, and applies an activation function.}
-\end{figure}
-
-The quantity $\vect{w}^\top \vect{x} + b$ defines a linear function of the input. The set of points satisfying
-\[
-    \vect{w}^\top \vect{x} + b = 0
-\]
-forms a hyperplane in $\R^n$. This hyperplane divides the input space into two half-spaces, corresponding to the two possible outputs of the perceptron.
-
-In a binary classification setting, the perceptron assigns a label according to the sign of this linear function:
-\[
-    y =
-    \begin{cases}
-        1, & \text{if } \vect{w}^\top \vect{x} + b > 0, \\
-        0, & \text{otherwise.}
-    \end{cases}
-\]
-
-Although a single perceptron can represent only linearly separable decision boundaries, networks composed of multiple perceptrons can approximate highly complex nonlinear functions.
-
+\input{chapters/introduction.tex}
+\input{chapters/mnist_mlp.tex}
 
 \end{document}
