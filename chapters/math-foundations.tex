@@ -1,0 +1,104 @@
+\chapter{Mathematical Foundations}
+
+\section{Vectors, Matrices, and Basic Operations}
+
+We denote scalars by lowercase letters, vectors by bold lowercase letters, and matrices by bold uppercase letters. For example, $\vect{x} \in \R^n$ denotes a vector with $n$ real elements and $\mat{W} \in \R^{m \times n}$ denotes a matrix of real elements with size $m \times n$.
+
+The output of a linear transformation is given by
+\[
+    \vect{z} = \mat{W}\vect{x} + \vect{b},
+\]
+where $\vect{b} \in \R^m$ is a bias vector.
+
+
+\subsection{Elementwise Operations}
+
+In addition to matrix multiplication, elementwise operations are frequently used in neural networks. The Hadamard product between two vectors $\vect{a} = \brak{a_i}_{i=1}^n, \vect{b} = \brak{b_i}_{i=1}^n \in \R^n$ is defined as
+\[
+    \vect{a} \odot \vect{b} = \brak{a_i b_i}_{i=1}^n \in \R^n.
+\]
+
+The Hadamard product can be expressed using a diagonal matrix. For a vector $\vect{a} = \brak{a_i}_{i=1}^n \in \R^n$, define
+\[
+    \diag(\vect{a}) =
+    \begin{bmatrix}
+        a_1 &        & 0   \\
+            & \ddots &     \\
+        0   &        & a_n
+    \end{bmatrix}.
+\]
+
+Then,
+\begin{equation} \label{eq:hadamard-diagonal-rep}
+    \vect{a} \odot \vect{b} = \diag(\vect{a}) \vect{b}.
+\end{equation}
+
+This representation is useful in deriving gradients in backpropagation.
+
+
+\section{Eigenvalues and Eigenvectors}
+
+Eigenvalues and eigenvectors describe how a linear transformation scales and rotates vectors.
+
+For a matrix $\mat{A} \in \R^{n \times n}$, a vector $\vect{v} \neq \vect{0}$ is an eigenvector if
+\[
+    \mat{A}\vect{v} = \lambda \vect{v},
+\]
+where $\lambda$ is the corresponding eigenvalue. Eigenvalues provide insight into the behavior of transformations, including stability and conditioning, which are important in optimization.
+
+
+\section{Gradients and Hessians}
+
+Let $f : \R^n \rightarrow \R$ be a scalar-valued function. The gradient of $f$ is defined as
+\[
+    \nabla f(\vect{x}) =
+    \begin{bmatrix}
+        \frac{\partial f}{\partial x_1} \\
+        \vdots                          \\
+        \frac{\partial f}{\partial x_n}
+    \end{bmatrix}.
+\]
+
+The Hessian matrix is the matrix of second-order derivatives:
+\[
+    \mat{H} =
+    \begin{bmatrix}
+        \frac{\partial^2 f}{\partial x_1^2}            & \cdots & \frac{\partial^2 f}{\partial x_1 \partial x_n} \\
+        \vdots                                         & \ddots & \vdots                                         \\
+        \frac{\partial^2 f}{\partial x_n \partial x_1} & \cdots & \frac{\partial^2 f}{\partial x_n^2}
+    \end{bmatrix}.
+\]
+
+It captures curvature and plays a central role in understanding optimization behavior.
+
+
+\section{Probability and Random Variables}
+
+A random variable $X$ is characterized by a probability distribution. The expected value of a discrete random variable $X$ is defined as
+\[
+    \E[X] = \sum_x x \, p(x).
+\]
+
+Expectation is widely used in defining loss functions and model objectives.
+
+
+\section{Entropy and Divergence}
+
+The entropy of a discrete distribution $p(x)$ is defined as
+\[
+    H(p) = -\sum_x p(x) \log p(x).
+\]
+
+The cross-entropy between two distributions $p$ and $q$ is given by
+\[
+    H(p, q) = -\sum_x p(x) \log q(x).
+\]
+
+The Kullback--Leibler (KL) divergence is defined as
+\[
+    D_{\mathrm{KL}}(p \,\|\, q) = \sum_x p(x) \log \frac{p(x)}{q(x)}.
+\]
+
+These quantities are fundamental in defining loss functions for classification models.
+
+

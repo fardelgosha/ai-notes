@@ -1,12 +1,12 @@
 \chapter{Empirical Study of MLP Training Dynamics on MNIST}
 
-In this chapter we study the behavior of a simple multilayer perceptron (MLP) trained on the MNIST dataset. The objective is to understand how different hyperparameters affect training dynamics and model accuracy.
+In this chapter we study the behavior of a simple \gls{mlp} trained on the MNIST dataset. The objective is to understand how different hyperparameters affect training dynamics and model accuracy.
 
 
 
 \section{Baseline Experiment}
 
-We begin with a baseline configuration in order to observe the natural training dynamics of the MLP.
+We begin with a baseline configuration in order to observe the natural training dynamics of the \gls{mlp}.
 
 The network architecture is
 
@@ -46,7 +46,7 @@ Several patterns can be observed:
 
 \section{Experiments}
 
-Once a baseline is established, we can not study the effects of parameters such as the batch size and the learning rate on the MLP metrics. These experiments performed on the MLP with the values used for parameters are summarized in \cref{tab:mnist-mlp-exps}. The first row in this table shows the baseline experiment \mlpexp{1}.
+Once a baseline is established, we can not study the effects of parameters such as the batch size and the learning rate on the \gls{mlp} metrics. These experiments performed on the \gls{mlp} with the values used for parameters are summarized in \cref{tab:mnist-mlp-exps}. The first row in this table shows the baseline experiment \mlpexp{1}.
 
 \begin{table}[tbp]
     \centering
@@ -66,7 +66,7 @@ Once a baseline is established, we can not study the effects of parameters such 
         Exp 7  &  784--512--256--10  &  64   &  $10^{-3}$  &  1  &  96.42  &  13.661 \\
     \end{eleganttable}
 
-    \caption{Values used for MLP parameters in experiments to observe the metrics.}
+    \caption{Values used for \gls{mlp} parameters in experiments to observe the metrics.}
     \label{tab:mnist-mlp-exps}
 \end{table}
 
@@ -133,7 +133,7 @@ The plot of the gradient-to-parameter norm ratio further illustrates this behavi
 
 Increasing the size of the hidden layer introduces a larger number of trainable parameters in the network. Consequently, the magnitude of the parameter norms becomes larger compared to those in \mlpexp{1}, as shown in the middle plot of \cref{fig:mnist-mlp-exp06}. This behavior is expected because the $\ell_2$ norm of the parameters grows with the number of weights in the model.
 
-The larger hidden layer also increases the representational capacity of the network, enabling the MLP to learn more complex patterns in the training data. As a result, the classification accuracy improves compared to the baseline configuration.
+The larger hidden layer also increases the representational capacity of the network, enabling the \gls{mlp} to learn more complex patterns in the training data. As a result, the classification accuracy improves compared to the baseline configuration.
 
 Interestingly, the magnitude of the gradient norms remains comparable to those observed in \mlpexp{1}. However, since the parameter norms grow faster in the larger model, the ratio of the gradient norm to the parameter norm decreases more rapidly. This indicates that the relative size of parameter updates becomes smaller as the network capacity increases.
 
@@ -149,7 +149,7 @@ The primary trade-off of increasing the hidden layer size is the higher computat
 
 \subsection{\mlpexp{7}: Adding Hidden Layers}
 
-Adding additional hidden layers reveals several interesting aspects of training dynamics in MLPs, as shown in \cref{fig:mnist-mlp-exp07}. One important observation is that the gradient norms decrease as gradients backpropagate through the network toward the input layers. This behavior reflects attenuation of gradient magnitudes across layers during backpropagation.
+Adding additional hidden layers reveals several interesting aspects of training dynamics in \gls{mlp}s, as shown in \cref{fig:mnist-mlp-exp07}. One important observation is that the gradient norms decrease as gradients backpropagate through the network toward the input layers. This behavior reflects attenuation of gradient magnitudes across layers during backpropagation.
 
 Another observation is that the magnitude of parameter norms increases toward the earlier layers of the network. This is primarily due to the number of parameters in each layer. The first, second, and third weight layers contain $784 \times 512 = 401{,}408$, $512 \times 256 = 131{,}072$, and $256 \times 10 = 2{,}560$ parameters, respectively. Layers with more parameters tend to exhibit larger $\ell_2$ norms.
 

@@ -3,6 +3,9 @@
 \RequirePackage{geometry}
 \geometry{margin=1in}
 
+\RequirePackage[acronym]{glossaries}
+\makeglossaries
+
 \RequirePackage{amsmath}
 \RequirePackage{mathtools}
 \RequirePackage{bm}
@@ -15,6 +18,14 @@
 \RequirePackage{parskip}
 \RequirePackage{titlesec}
 \RequirePackage{hyperref}
+\definecolor{linkblue}{RGB}{0, 70, 140}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkblue,
+    citecolor=linkblue,
+    urlcolor=linkblue
+}
+
 \RequirePackage{cleveref}
 \RequirePackage{marginnote}
 \RequirePackage{graphicx}

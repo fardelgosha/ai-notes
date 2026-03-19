@@ -1,0 +1,59 @@
+\chapter{Neural Networks Foundation}
+
+\section{Perceptron}
+
+A \emph{perceptron}\keyword{Perceptron} is a fundamental computational unit of neural networks, inspired by the behavior of biological neurons. It receives multiple inputs, computes a weighted combination of those inputs, and produces an output after applying a nonlinear activation function.
+
+Formally, let $\vect{x} \in \R^n$ denote an input vector. A perceptron computes
+\[
+    y = \sigma\left(\vect{w}^\top \vect{x} + b\right),
+\]
+where $\vect{w} \in \R^n$ is a vector of \emph{weights}, $b \in \R$ is a \emph{bias term}, and $\sigma(\cdot)$ is an \emph{activation function}.
+
+\begin{figure}[tb]
+    \centering
+    \input{../figures/perceptron_geometry.tikz}
+    \caption{A perceptron receives input features, computes a weighted sum with bias, and applies an activation function.}
+\end{figure}
+
+The quantity $\vect{w}^\top \vect{x} + b$ defines a linear function of the input. The set of points satisfying
+\[
+    \vect{w}^\top \vect{x} + b = 0
+\]
+forms a hyperplane in $\R^n$. This hyperplane divides the input space into two half-spaces, corresponding to the two possible outputs of the perceptron.
+
+In a binary classification setting, the perceptron assigns a label according to the sign of this linear function:
+\[
+    y =
+    \begin{cases}
+        1, & \text{if } \vect{w}^\top \vect{x} + b > 0, \\
+        0, & \text{otherwise.}
+    \end{cases}
+\]
+
+Although a single perceptron can represent only linearly separable decision boundaries, networks composed of multiple perceptrons can approximate highly complex nonlinear functions.
+
+
+\section{Loss Functions}
+
+
+\section{Gradient Descent}
+
+
+\section{Backpropagation}
+
+
+\section{Regularization}
+
+Regularization augments the original loss function with a penalty term that discourages large parameter values. Given a data-dependent loss function $L_{\mathrm{data}}(W)$, L2 regularization modifies the optimization problem as
+\[
+    L_{\mathrm{total}}(W) = L_{\mathrm{data}}(W) + \lambda \norm{W}^2,
+\]
+where $\lambda > 0$ controls the strength of the penalty. This additional term constrains the magnitude of the weights, leading to smoother decision boundaries and improved generalization. Intuitively, regularization prevents the model from fitting noise in the training data by limiting its capacity to form overly complex functions. With regularization, the model learns patterns in the input noisy data as opposed to the noise itself.
+
+With regularization, the \gls{gd} updates become:
+\[
+    \mat{W} = \mat{W} - \eta \left(\grad L_{\mathrm{data}} + \lambda \mat{W}\right)
+\]
+
+The regularization parameter $\lambda$ controls the strength of the penalty imposed on the model parameters. From an optimization perspective, this formulation is equivalent to a constrained problem in which the norm of the weights is bounded. The parameter $\lambda$ acts as a Lagrange multiplier that balances data fidelity and model simplicity. In practice, $\lambda$ is treated as a hyperparameter and is selected empirically, typically through experimentation or validation, since its optimal value depends on the dataset model architecture, and training dynamics.
