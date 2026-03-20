@@ -45,7 +45,7 @@ Although a single perceptron can represent only linearly separable decision boun
 
 \section{Regularization}
 
-Regularization augments the original loss function with a penalty term that discourages large parameter values. Given a data-dependent loss function $L_{\mathrm{data}}(W)$, L2 regularization modifies the optimization problem as
+Regularization augments the original loss function with a penalty term that discourages large parameter values. Given a data-dependent loss function $L_{\mathrm{data}}(W)$, the L2 regularization modifies the optimization problem as
 \[
     L_{\mathrm{total}}(W) = L_{\mathrm{data}}(W) + \lambda \norm{W}^2,
 \]
@@ -57,3 +57,8 @@ With regularization, the \gls{gd} updates become:
 \]
 
 The regularization parameter $\lambda$ controls the strength of the penalty imposed on the model parameters. From an optimization perspective, this formulation is equivalent to a constrained problem in which the norm of the weights is bounded. The parameter $\lambda$ acts as a Lagrange multiplier that balances data fidelity and model simplicity. In practice, $\lambda$ is treated as a hyperparameter and is selected empirically, typically through experimentation or validation, since its optimal value depends on the dataset model architecture, and training dynamics.
+
+Regularization is not always necessary, particularly when the model capacity is limited,
+the training duration is short, or the dataset is sufficiently large and clean. In such cases,
+the model may not exhibit significant overfitting, and additional regularization may have
+minimal or even adverse effects on performance.

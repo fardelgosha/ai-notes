@@ -53,20 +53,22 @@ Once a baseline is established, we can not study the effects of parameters such 
 
     \rowcolors{2}{tablegray}{white}
 
-    \begin{eleganttable}{lcccccc}
+    \begin{eleganttable}{lcccccSS}
         \rowcolor{tableheader}
-        \textbf{Experiment} & \textbf{Layer Sizes} & \textbf{Batch Size} & \makecell{\textbf{Learning} \\ \textbf{Rate}} & \textbf{Epochs} & \textbf{Accuracy (\%)} & \makecell{\textbf{Execution} \\ \textbf{Time (s)}} \\
+        \textbf{Exp} & \textbf{Layers} & \textbf{Batch} & \textbf{LR} & \textbf{WD} & \textbf{Epoch} & \textbf{Acc (\%)} & \textbf{Time (s)} \\
         \midrule
-        Exp 1  &  784--128--10       &  64   &  $10^{-3}$  &  1  &  94.13  &  10.469 \\
-        Exp 2  &  784--128--10       &  128  &  $10^{-3}$  &  1  &  93.56  &  10.285 \\
-        Exp 3  &  784--128--10       &  64   &  $10^{-4}$  &  1  &  89.69  &  10.294 \\
-        Exp 4  &  784--128--10       &  64   &  $10^{-2}$  &  1  &  70.08  &  10.338 \\
-        Exp 5  &  784--128--10       &  64   &  $10^{-3}$  &  3  &  96.95  &  31.099 \\
-        Exp 6  &  784--512--10       &  64   &  $10^{-3}$  &  1  &  95.8   &  12.286 \\
-        Exp 7  &  784--512--256--10  &  64   &  $10^{-3}$  &  1  &  96.42  &  13.661 \\
+        Exp 1  &  784--128--10       &  64   &  $10^{-3}$  &  0         &   1  &  94.13  &  10.469 \\
+        Exp 2  &  784--128--10       &  128  &  $10^{-3}$  &  0         &   1  &  93.56  &  10.285 \\
+        Exp 3  &  784--128--10       &  64   &  $10^{-4}$  &  0         &   1  &  89.69  &  10.294 \\
+        Exp 4  &  784--128--10       &  64   &  $10^{-2}$  &  0         &   1  &  70.08  &  10.338 \\
+        Exp 5  &  784--128--10       &  64   &  $10^{-3}$  &  0         &   3  &  96.95  &  31.099 \\
+        Exp 6  &  784--512--10       &  64   &  $10^{-3}$  &  0         &  1  &  95.8   &  12.286 \\
+        Exp 7  &  784--512--256--10  &  64   &  $10^{-3}$  &  0         &  1  &  96.42  &  13.661 \\
+        Exp 8  &  784--128--10       &  64   &  $10^{-3}$  &  $10^{-4}$ &  1  &  94.57  &  11.293 \\
+        Exp 9  &  784--128--10       &  64   &  $10^{-3}$  &  $10^{-2}$ &  1  &  91.93  &  10.503 \\
     \end{eleganttable}
 
-    \caption{Values used for \gls{mlp} parameters in experiments to observe the metrics.}
+    \caption{Values of \gls{mlp} parameters used in experiments to study training dynamics (LR = learning rate, WD = weight decay).}
     \label{tab:mnist-mlp-exps}
 \end{table}
 
@@ -163,4 +165,31 @@ Adding hidden layers also increases the representational capacity of the model, 
     \includegraphics[width=\textwidth]{figures/mlp/exp07}
     \caption{Effects of adding hidden layers during training.}
     \label{fig:mnist-mlp-exp07}
+\end{figure}
+
+
+\subsection{\mlpexp{8}: Adding Weight Decay}
+
+The L2 regularization, as expected, does not affect the gradients stored in \texttt{p.grad}, but it tapers the magnitude of the parameter norms after they stabilize on the loss landscape. As a result, the ratio of gradient norm to parameter norm eventually increases.
+
+In PyTorch, L2 regularization is implemented through the \texttt{weight\_decay} parameter of the optimizer. This approach modifies the parameter update rule directly, without altering the computed gradients stored in \texttt{p.grad}. Consequently, the logged gradient norms reflect only the data-driven component of the loss, while the regularization effect is implicitly applied during the parameter update step.
+
+For small values of the regularization parameter $\lambda$, the effect of weight decay may be negligible compared to the magnitude of the data-driven gradients. In such cases, the parameter norms, gradient norms, and their ratios may appear nearly identical to the unregularized setting, indicating that the regularization term is too weak to significantly influence the training dynamics.
+
+With sufficiently large values of $\lambda$, the parameter norms no longer grow monotonically but instead converge to a stable equilibrium. This behavior reflects a balance between the data-driven gradients and the regularization term, which continuously pulls the parameters toward smaller magnitudes.
+
+\cref{fig:mnist-mlp-exp08,fig:mnist-mlp-exp09} correspond to weight decay values of $10^{-4}$ and $10^{-2}$, respectively. When the weight decay is increased to $10^{-2}$, the effect of L2 regularization becomes clearly visible. The parameter norms are constrained to significantly smaller magnitudes than in the unregularized setting, indicating that the optimizer is continuously shrinking the weights during training. Although the logged gradient norms remain of comparable magnitude, the stronger regularization alters the effective update rule and limits the growth of the parameters. As a consequence, the model underfits the training data and the accuracy drops from 94.13\% to 91.92\%. This experiment illustrates that excessive regularization can suppress model capacity and degrade performance.
+
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/mlp/exp08}
+    \caption{Effects of adding small weight decay during training.}
+    \label{fig:mnist-mlp-exp08}
+\end{figure}
+
+\begin{figure}[tbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/mlp/exp09}
+    \caption{Effects of adding large weight decay during training.}
+    \label{fig:mnist-mlp-exp09}
 \end{figure}
